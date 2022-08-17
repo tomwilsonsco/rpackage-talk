@@ -1,0 +1,82 @@
+---
+title: "Creating R Packages"
+output: 
+  ioslides_presentation:
+    widescreen: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(devtools)
+```
+
+## What is an R Package?
+
+- A package is what we install from [CRAN](https://cran.r-project.org/) (or an internal server) with `install.packages()` and load with `library()`.
+- Bundles R code (functions) so easy to share with others.
+- A package can include documentation, sample data, test scripts.
+- It is surprisingly easy to create an R package and highly recommended!
+
+
+## Why create an R Package?
+
+- Sharing R code to be used by others:
+  - Clear, known way for others to access your R code and start using it.
+  - Best way to ensure consistent use of R functionality you've developed.
+- Reproducibility from packaging code makes it an important part of a [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
+- A clear workflow for structuring code repository, documenting processes, testing them.
+- Creating an R package gives a better understanding of how R works.
+
+## Reference materials
+
+- [Creating R Packages](https://r-pkgs.org/) by Hadley Wickham and Jenny Bryan. Easy to follow introductory guide, mostly using [devtools](https://cran.r-project.org/web/packages/devtools/index.html)
+- [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html). Definitive guide on CRAN for reference.
+
+## Packages used when creating a package!
+- [devtools](https://cran.r-project.org/web/packages/devtools/index.html) has many functions to make all stages of package development easier and this is what will be used in this demo.
+- [usethis](https://cran.r-project.org/web/packages/usethis/index.html) is the package with much of this functionality imported by devtools.
+- [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html) documentation and metadata files when creating a package
+- [testthat](https://cran.r-project.org/web/packages/testthat/index.html) another Hadley Wickham package used for formal testing of packages.
+
+
+## Creating a package
+```{r create-package, eval=FALSE}
+library(devtools) # this loads usethis which is source of many of the functions shown
+create_package("rpackagetest")
+```
+
+
+The package name must:
+
+- Be at least two characters
+- Letters, numbers and . only (no other chracters including _ -)
+- Start with a letter
+- Can't end with a .
+
+## Make package a git repository
+```{r use-git, eval=FALSE}
+use_git()
+```
+(see later slide on sharing regarding putting package on GitHub)
+
+## Structure of a R package
+- DESCRIPTION file provides important information about the package.
+The title, version, authors, description can be edited.
+Imported packages will later be added to this using `usethis::use_package("package_name")`
+
+- NAMESPACE contains the functions that will be available to users of the package. 
+Recomm
+
+## Create first function
+```{r first-function, eval=FALSE}
+use_r(clean_column_names.R)
+```
+This simply creates a script to create a function under `R/`.  
+
+We want to create a documentation for the function.
+In RStudio with cursor inside the function go to menu and select Code > Insert roxygen skeleton.
+
+## Generate the documentation
+```{r document-function, eval=FALSE}
+document()
