@@ -10,6 +10,22 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(devtools)
 ```
+## An introduction to creating R Packages
+### Aim to cover
+x. Why create a package?
+x. Useful reference materials and useful R libraries.
+x. Basic run through of creating a package in R Studio.
+x. Documenting functions within a package.
+x. Checking a package for errors.
+x. Building / compiling the package.
+
+## An introduction to creating R Packages
+### This talk won't cover
+x. Use of Git and GitHub.  
+x. Formal code testing.
+x. Creating viginettes.
+x. Using C and C++, Rccp for peformance.
+x. Releasing package on CRAN.
 
 ## What is an R Package?
 
@@ -30,20 +46,19 @@ library(devtools)
 
 ## Reference materials
 
-- [Creating R Packages](https://r-pkgs.org/) by Hadley Wickham and Jenny Bryan. Easy to follow introductory guide, mostly using [devtools](https://cran.r-project.org/web/packages/devtools/index.html)
+- [Creating R Packages](https://r-pkgs.org/) by Hadley Wickham and Jenny Bryan. Easy to follow introductory guide, based around [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and related libraries.
 - [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html). Definitive guide on CRAN for reference.
 
-## Packages used when creating a package!
-- [devtools](https://cran.r-project.org/web/packages/devtools/index.html) has many functions to make all stages of package development easier and this is what will be used in this demo.
-- [usethis](https://cran.r-project.org/web/packages/usethis/index.html) is the package with much of this functionality imported by devtools.
+## Packages that are useful for creating a package!
+- [devtools](https://cran.r-project.org/web/packages/devtools/index.html) like a 'tidyverse' for package development.
+- [usethis](https://cran.r-project.org/web/packages/usethis/index.html) automating package configuration tasks.
 - [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html) documentation and management of package metadata files.
 - [testthat](https://cran.r-project.org/web/packages/testthat/index.html) formal unit testing of packages.
 
 
 ## Creating a package
 ```{r create-package, eval=FALSE}
-library(devtools) # this loads usethis which is source of many of the functions shown
-create_package("rpackagetest")
+usethis::create_package("rpackagetest")
 ```
 
 
@@ -59,10 +74,14 @@ available::available("mypackagename")
 ```
 ## Make package a git repository
 ```{r use-git, eval=FALSE}
-use_git()
+usethis::use_git()
 ```
 Does the same as `git init` but adds certain files to `.gitignore`.
-(see later slide on sharing regarding putting package on GitHub)
+If want to put package on GitHub:
+- Easiest might be to create GitHub repo first of name of package.
+- Then can set the remote:  
+`git remote add <ssh link>`  
+Alternatively, the `usethis` package does have a `use_github` function might explore.
 
 ## Structure of a R package
 - DESCRIPTION file provides important information about the package.
@@ -70,10 +89,11 @@ The title, version, authors, description can be edited.
 Imported packages will later be added to this using `usethis::use_package("package_name")`
 
 - NAMESPACE contains the functions that will be available to users of the package.
+- `R\` folder contains the code that will be created.
 
 ## Create first function
 ```{r first-function, eval=FALSE}
-use_r(clean_column_names.R)
+usethis::use_r(clean_column_names.R)
 ```
 This simply creates a script to create a function under `R/`.  
 
@@ -88,7 +108,7 @@ In RStudio with cursor inside the function go to menu and select Code > Insert r
 
 ## Load the package to test the functionality
 ```{r load-package, eval=FALSE}
-load_all()
+usethis::load_all()
 ```
 - This is simulating installing the package and loading it, so useful for checking while developing.
 - Note the functions in the package will be available, but not seen in the global environment, just like when load with `library()`.
@@ -106,12 +126,6 @@ document()
 - `check()` is a good way to ensure everything is in order.
 - `use_pipe()` is a way to set a package so can use magrittr pipe `%>%` in function 
 (should not have `library(magrittr)` in package function.)
-
-## Distributing - Putting on GitHub
-- Easiest might be to create GitHub repo first of name of package.
-- Then can set the remote:  
-`git remote add <ssh link>`  
-Alternatively the `usethis` package does have a `use_github` function might explore.
 
 ## Distributing - building a package
 - Use the `build()`
