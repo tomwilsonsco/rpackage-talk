@@ -5,7 +5,11 @@ usethis::create_package("C:/tests/rpackagestest")
 #Note rules on creating a package (no special cr)
 
 # when in the package run
-usethis::use_git()
+usethis::use_git() # might be better to use git init as with older usethis default is named master, not main
+# Can use Git Bash / shell 
+# to change default branch to main
+# git branch -m master main 
+# git remote add origin ssh_to_remote
 
 #create a function
 usethis::use_r("std_scale_column")
@@ -35,8 +39,6 @@ std_scale_column(test_iris, Sepal.Length)
 #(Note that scale_column function available, but not in global env because it's like loading from library()
 #Bring up the help
 ?std_scale_column
-
-
 
 #Good idea to check package periodically while developing
 usethis::check()
