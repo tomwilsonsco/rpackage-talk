@@ -23,14 +23,14 @@ x. Building / compiling the package.
 ### This talk won't cover
 x. Use of Git and GitHub.  
 x. Formal code testing.
-x. Creating viginettes.
+x. Creating vignettes.
 x. Using C and C++, Rccp for peformance.
 x. Releasing a package on CRAN.
 
 ## What is an R Package?
 
 - A package is what we install from [CRAN](https://cran.r-project.org/) (or an internal server) with `install.packages()` and load with `library()`.
-- Bundles R code (functions) so easy to share with others.
+- Bundles R code (functions, methods, classes) so usable by others.
 - A package can include documentation, sample data, test scripts.
 - It is surprisingly easy to create an R package and highly recommended!
 
@@ -49,7 +49,7 @@ x. Releasing a package on CRAN.
 - [Creating R Packages](https://r-pkgs.org/) by Hadley Wickham and Jenny Bryan. Easy to follow introductory guide, based around [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and related libraries.
 - [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html). Definitive guide on CRAN for reference.
 
-## Packages that are useful for creating a package!
+## Packages that are useful for creating a package
 - [devtools](https://cran.r-project.org/web/packages/devtools/index.html) a bit like a 'tidyverse' for package development.
 - [usethis](https://cran.r-project.org/web/packages/usethis/index.html) automating package setup and configuration tasks.
 - [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html) documentation and management of package metadata files.
@@ -76,18 +76,18 @@ available::available("mypackagename")
 ```{r use-git, eval=FALSE}
 usethis::use_git()
 ```
-Does the same as `git init` but adds certain files to `.gitignore`.
-If want to put package on GitHub:
-- Easiest might be to create GitHub repo first of name of package.
-- Then can set the remote:  
-`git remote add orign <ssh link>` 
-Alternatively, the `usethis` package does have a `use_github` function might explore.
-(Beware of main vs master if using older usethis package version)
+Does the same as `git init` but adds certain files to `.gitignore`.  
+If want to put package on GitHub:  
+- Easiest might be to create GitHub repo first of name of package.  
+- Then can set the remote:    
+`git remote add orign <ssh link>`  
+Alternatively, the `usethis` package does have a `use_github` function might explore.  
+(Beware of main vs master if using older usethis package version).
 
-## Structure of a R package
+## Structure of an R package
 - DESCRIPTION file provides important information about the package.
 The title, version, authors, description can be edited.
-Imported packages will later be added to this using `usethis::use_package("package_name")`
+Imported packages will later be added to this using `usethis::use_package("package_name")`.
 
 - NAMESPACE contains the functions that will be available to users of the package.
 - `R\` folder contains the code that will be created.
@@ -100,12 +100,36 @@ This simply creates a script to create a function under `R/`.
 
 We want to create a documentation for the function.
 In RStudio with cursor inside the function go to menu and select Code > Insert roxygen skeleton.
+```
+#' Title
+#'
+#' @param df 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+std_scale_df <- function(df) {
+  df %>% dplyr::mutate_if(is.numeric, std_scale)
+}
+```
+
+## Document a function - roxygen2
+- In particular the main function should have roxygen2 comment.
+- In RStudio, while cursor inside function, go to Code > Insert Roxygen Skelton
+- The roxygen comment is generates the help for the function.
+- Need to add:
+  - Description of function at the top.
+  - A description of each input argument.
+  - What it returns.
+  - An example of using.
+- The `@export` means the function will be available to users once package loaded (adds to NAMESPACE).
 
 ## What should go in the R/<script_name>.R files
 - Note that only function definitions should be in these files.
 - Do not use `library(package_name)` to load other libraries.
 - Do not use `source("my_other_script.R")`.
-- It is fine to have more than one function in one .R file, generally one main function and its helper function
+- It is fine to have more than one function in one .R file, generally one main function and its helper function.
 
 ## Importing other packages used in functions
 - In most cases best to specify packages as `imports` not `depends`.
@@ -116,17 +140,7 @@ In RStudio with cursor inside the function go to menu and select Code > Insert r
 usethis::use_package("dplyr")
 ```
 
-## Document a function - roxygen2
-- In particular the main function should have roxygen2 comment.
-- In RStudio, while cursor inside function, go to Code > Insert Roxygen Skelton
-- This is the basis for the help for the function.
-- Need to add:
-  - Description of function at the top.
-  - A description of each input argument.
-  - An example of using.
-- The `@export` means the function will be available to users once package loaded (adds to NAMESPACE).
-
-## Generate the documentation
+## Generate the documentation from roxygen comments
 After populating the roxygen2 comments for exported functions, can generate the documentation.
 ```{r document-function, eval=FALSE}
 document()
@@ -143,15 +157,24 @@ usethis::load_all()
 - Note the functions in the package will be available, but not seen in the global environment, just like when load with `library()`.
 
 ## Suggestions
-- `check()` is a good way to ensure everything is in order.
-- If need to use things like %>% and := can specify in function comment with `@importFrom`
+- `devtools::check()` is a good way to ensure everything is in order.
+- If need to use `%>%` or `:=` specify in roxygen function comment with `@importFrom`
+```
 #' @importFrom rlang :=
 #' @importFrom magrittr %>%
+```
 - `use_pipe()` is a way to set a package so can use magrittr pipe `%>%` in function 
 (definitely should not have `library(magrittr)` in package function.)
 
 ## Distributing - building a package
-- Use the `build()`
-- If want a binary use `build(binary=TRUE)`
+- Use `devtools::build()`.
+- If want a binary use `devtools::build(binary=TRUE)`
+- People can also install package from GitHub `devtools::install_github()`.
 - The `.Rbuildignore` specifies files that will not be included in package tarball or binary. 
+- Note that might wish to increment the version before building. This is in DESCRIPTION.
+- However, there is a `usethis` function to do this:
+```
+usethis::use_version() #prompts with options of how to increment the version number.
+```
+
 
