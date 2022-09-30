@@ -1,5 +1,5 @@
 ---
-title: "Creating R Packages"
+title: "An introduction to creating R packages"
 output: 
   ioslides_presentation:
     widescreen: true
@@ -37,12 +37,11 @@ x. Releasing a package on CRAN.
 
 ## Why create an R Package?
 
-- Sharing R code to be used by others:
-  - Clear, known way for others to access your R code and start using it.
-  - Best way to ensure consistent use of R functionality you've developed.
-- Reproducibility and reusability from packaging code, so can be part of a [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
-- A clear workflow for structuring code repository, documenting processes, testing them.
-- Creating an R package gives a better understanding of how R works.
+- Sharing: Make R code you have developed accessible to others simply by installing the package.
+- Reusability: Packages will usually bundle functionality that can be used across many projects.
+- Reproducibility: Packaging code with a build version for use in an [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
+- Clarity: A known system for structuring code repository, documenting processes, testing them.
+- Understanding: Developing an R package gives builds knowledge of how R works.
 
 ## Reference materials
 

@@ -1,6 +1,6 @@
 
 # Create a package structure in a directory - here rpackagestest
-usethis::create_package("C:/tests/rpackagestest")
+usethis::create_package("C:/tests/rpackagetest")
 
 # Note rules on naming a package (letters, numbers, . only, at least 2 letters, start with letter)
 
@@ -10,6 +10,7 @@ usethis::use_git() # might be better to use git init as with older usethis defau
 # to change default branch to main
 # git branch -m master main
 # git remote add origin ssh_to_remote
+
 
 # create a function
 usethis::use_r("std_scale_column")
@@ -27,34 +28,31 @@ std_scale_df <- function(df) {
 # Add dplyr to imports
 usethis::use_package("dplyr")
 usethis::use_package("stats")
+usethis::use_package("magrittr")
+
+# when want to use pipe, put this in function
+#' @importFrom magrittr %>%
+# Alternatively a pipe can be added with and can use in all functions
+usethis::use_pipe()
 
 # The roxygen comment should be added for the main function and then create documentation and namespace entry
 devtools::document() # equivalent of roxygen2::roxygenize()
 
 # Now let's test it!
-usethis::load_all()
+devtools::load_all()
 
-test_iris <- head(iris, 10)
-std_scale_df(test_iris)
+test_iris <- iris
+test_iris <- std_scale_df(test_iris)
+head(test_iris, 10)
 #Show that it's worked by printing original and scaled
 head(iris, 10)
-test_iris
 
 # (Note that scale_column function available, but not in global env because it's like loading from library()
 # Bring up the help
 ?std_scale_df
 
 # Good idea to check package periodically while developing
-usethis::check()
-
-# Find we are getting a warning due to the :=
-# This is rlang library and can be fixed by adding to roxygen comment:
-#' @importFrom rlang :=
-
-# similarly, if want to use a pipe
-#' @importFrom magrittr %>%
-# Alternatively a pipe can be added with
-usethis::use_pipe()
+devtools::check()
 
 # Final thing we will cover - building
 usethis::build() # this will create a "source" tar.gz
