@@ -9,6 +9,7 @@
 
 
 
+  <meta name="date" content="2022-10-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,6 +29,14 @@
 
       // Author information
       presenters: [
+            {
+        name:  'Tom Wilson <a href="mailto:thomas.wilson@gov.scot" class="email">thomas.wilson@gov.scot</a>' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
             ]
     };
   </script>
@@ -3112,6 +3121,7 @@ slide:not(.current) .plotly.html-widget{
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       
       <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">5 October 2022</p>
           </hgroup>
   </slide>
 
@@ -3136,7 +3146,7 @@ slide:not(.current) .plotly.html-widget{
 <li>Use of Git and GitHub.<br/></li>
 <li>Formal code testing.</li>
 <li>Creating vignettes.</li>
-<li>Using C and C++, Rccp for peformance.</li>
+<li>Using C and C++, Rcpp for peformance.</li>
 <li>Releasing a package on CRAN.</li>
 </ol>
 
@@ -3152,7 +3162,7 @@ slide:not(.current) .plotly.html-widget{
 </article></slide><slide class=""><hgroup><h2>Why create an R Package?</h2></hgroup><article  id="why-create-an-r-package">
 
 <ul>
-<li>Sharing: Make R code you have developed accessible to others simply by installing the package.</li>
+<li>Sharing: Make processes you have developed accessible to others by installing the package, not copying code or script files.</li>
 <li>Reusability: Packages will usually bundle functionality that can be used across many projects.</li>
 <li>Reproducibility: Packaging code with a build version for use in an <a href='https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/' title=''>Reproducible Analytical Pipeline</a>.</li>
 <li>Clarity: A known system for structuring code repository, documenting processes, testing them.</li>
@@ -3249,6 +3259,7 @@ std_scale_df &lt;- function(df) {
 <li>Do not use <code>library(package_name)</code> to load other libraries.</li>
 <li>Do not use <code>source(&quot;my_other_script.R&quot;)</code>.</li>
 <li>It is fine to have more than one function in one .R file, generally one main function and its helper function.</li>
+<li>See chapter 7 of <a href='https://r-pkgs.org/Code.html' title=''>Building R Packages</a> for discuss on these things.</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Importing other packages used in functions</h2></hgroup><article  id="importing-other-packages-used-in-functions">
@@ -3293,7 +3304,7 @@ std_scale_df &lt;- function(df) {
 #&#39; @importFrom magrittr %&gt;%</pre>
 
 <ul>
-<li><code>use_pipe()</code> is a way to set a package so can use magrittr pipe <code>%&gt;%</code> in function (definitely should not have <code>library(magrittr)</code> in package function.)</li>
+<li><code>use_pipe()</code> is a way to set a package so can use magrittr pipe <code>%&gt;%</code> in every function (definitely should not have <code>library(magrittr)</code> in package function.)</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Distributing - building a package</h2></hgroup><article  id="distributing---building-a-package">
