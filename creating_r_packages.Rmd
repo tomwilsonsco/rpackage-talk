@@ -17,22 +17,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(devtools)
 ```
-## An introduction to creating R Packages
-### Aim to cover
-x. Why create a package?
-x. Useful reference materials and useful R libraries.
-x. Basic run through of creating a package in R Studio.
-x. Documenting functions within a package.
-x. Checking a package for errors.
-x. Building / compiling the package.
-
-## An introduction to creating R Packages
-### This talk won't cover
-x. Use of Git and GitHub.  
-x. Formal code testing.
-x. Creating vignettes.
-x. Using C and C++, Rcpp for peformance.
-x. Releasing a package on CRAN.
 
 ## What is an R Package?
 
@@ -49,6 +33,23 @@ x. Releasing a package on CRAN.
 - Reproducibility: Packaging code with a build version for use in an [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
 - Clarity: A known system for structuring code repository, documenting processes, testing them.
 - Understanding: Developing an R package gives builds knowledge of how R works.
+
+## An introduction to creating R Packages
+### Aim to cover in this talk
+x. Why create a package?
+x. Useful reference materials and useful R libraries.
+x. Basic run through of creating a package in R Studio.
+x. Documenting functions within a package.
+x. Checking a package for errors.
+x. Building / compiling the package.
+
+## An introduction to creating R Packages
+### This talk won't cover
+x. Use of Git and GitHub.  
+x. Formal code testing.
+x. Creating vignettes.
+x. Releasing a package on CRAN.
+x. Rewriting R in C++ and using Rcpp for performance.
 
 ## Reference materials
 
@@ -106,7 +107,7 @@ This simply creates a script to create a function under `R/`.
 
 We want to create a documentation for the function.
 In RStudio with cursor inside the function go to menu and select Code > Insert roxygen skeleton.
-```
+```{r roxygen, eval=FALSE}
 #' Title
 #'
 #' @param df 
@@ -150,7 +151,7 @@ usethis::use_package("dplyr")
 ## Generate the documentation from roxygen comments
 After populating the roxygen2 comments for exported functions, can generate the documentation.
 ```{r document-function, eval=FALSE}
-document()
+devtools::document()
 ```
 
 - Creates a `man/<function_name>.rd` documentation file
@@ -158,7 +159,7 @@ document()
 
 ## Load the package to test the functionality
 ```{r load-package, eval=FALSE}
-usethis::load_all()
+devtools::load_all()
 ```
 - This is simulating installing the package and loading it, so useful for checking while developing.
 - Note the functions in the package will be available, but not seen in the global environment, just like when load with `library()`.
@@ -166,12 +167,12 @@ usethis::load_all()
 ## Suggestions
 - `devtools::check()` is a good way to ensure everything is in order.
 - If need to use `%>%` or `:=` specify in roxygen function comment with `@importFrom`
-```
+```{r pipe, eval=FALSE}
 #' @importFrom rlang :=
 #' @importFrom magrittr %>%
 ```
-- `use_pipe()` is a way to set a package so can use magrittr pipe `%>%` in every function 
-(definitely should not have `library(magrittr)` in package function.) 
+- `usethis::use_pipe()` is an alternative way, setting a package so can use magrittr pipe `%>%` in every function.   
+(definitely should not have `library(magrittr)` in package R files). 
 
 ## Distributing - building a package
 - Use `devtools::build()`.
@@ -180,6 +181,6 @@ usethis::load_all()
 - The `.Rbuildignore` specifies files that will not be included in package tarball or binary. 
 - Note that might wish to increment the version before building. This is in DESCRIPTION.
 - However, there is a `usethis` function to do this:
-```
+```{r use_version, eval=FALSE}
 usethis::use_version() #prompts with options of how to increment the version number.
 ```

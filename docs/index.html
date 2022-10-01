@@ -3125,9 +3125,28 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>An introduction to creating R Packages</h2></hgroup><article  id="an-introduction-to-creating-r-packages">
+<slide class=""><hgroup><h2>What is an R Package?</h2></hgroup><article  id="what-is-an-r-package">
 
-<h3>Aim to cover</h3>
+<ul>
+<li>A package is what we install from <a href='https://cran.r-project.org/' title=''>CRAN</a> (or an internal server) with <code>install.packages()</code> and load with <code>library()</code>.</li>
+<li>Bundles R code (functions, methods, classes) so usable by others.</li>
+<li>A package can include documentation, sample data, test scripts.</li>
+<li>It is surprisingly easy to create an R package and highly recommended!</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Why create an R Package?</h2></hgroup><article  id="why-create-an-r-package">
+
+<ul>
+<li>Sharing: Make processes you have developed accessible to others by installing the package, not copying code or script files.</li>
+<li>Reusability: Packages will usually bundle functionality that can be used across many projects.</li>
+<li>Reproducibility: Packaging code with a build version for use in an <a href='https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/' title=''>Reproducible Analytical Pipeline</a>.</li>
+<li>Clarity: A known system for structuring code repository, documenting processes, testing them.</li>
+<li>Understanding: Developing an R package gives builds knowledge of how R works.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>An introduction to creating R Packages</h2></hgroup><article  id="an-introduction-to-creating-r-packages">
+
+<h3>Aim to cover in this talk</h3>
 
 <ol>
 <li>Why create a package?</li>
@@ -3146,28 +3165,9 @@ slide:not(.current) .plotly.html-widget{
 <li>Use of Git and GitHub.<br/></li>
 <li>Formal code testing.</li>
 <li>Creating vignettes.</li>
-<li>Using C and C++, Rcpp for peformance.</li>
 <li>Releasing a package on CRAN.</li>
+<li>Rewriting R in C++ and using Rcpp for performance.</li>
 </ol>
-
-</article></slide><slide class=""><hgroup><h2>What is an R Package?</h2></hgroup><article  id="what-is-an-r-package">
-
-<ul>
-<li>A package is what we install from <a href='https://cran.r-project.org/' title=''>CRAN</a> (or an internal server) with <code>install.packages()</code> and load with <code>library()</code>.</li>
-<li>Bundles R code (functions, methods, classes) so usable by others.</li>
-<li>A package can include documentation, sample data, test scripts.</li>
-<li>It is surprisingly easy to create an R package and highly recommended!</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Why create an R Package?</h2></hgroup><article  id="why-create-an-r-package">
-
-<ul>
-<li>Sharing: Make processes you have developed accessible to others by installing the package, not copying code or script files.</li>
-<li>Reusability: Packages will usually bundle functionality that can be used across many projects.</li>
-<li>Reproducibility: Packaging code with a build version for use in an <a href='https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/' title=''>Reproducible Analytical Pipeline</a>.</li>
-<li>Clarity: A known system for structuring code repository, documenting processes, testing them.</li>
-<li>Understanding: Developing an R package gives builds knowledge of how R works.</li>
-</ul>
 
 </article></slide><slide class=""><hgroup><h2>Reference materials</h2></hgroup><article  id="reference-materials">
 
@@ -3223,7 +3223,7 @@ available::available(&quot;mypackagename&quot;)</pre>
 
 <p>We want to create a documentation for the function. In RStudio with cursor inside the function go to menu and select Code &gt; Insert roxygen skeleton.</p>
 
-<pre >#&#39; Title
+<pre class = 'prettyprint lang-r'>#&#39; Title
 #&#39;
 #&#39; @param df 
 #&#39;
@@ -3277,7 +3277,7 @@ std_scale_df &lt;- function(df) {
 
 <p>After populating the roxygen2 comments for exported functions, can generate the documentation.</p>
 
-<pre class = 'prettyprint lang-r'>document()</pre>
+<pre class = 'prettyprint lang-r'>devtools::document()</pre>
 
 <ul>
 <li>Creates a <code>man/&lt;function_name&gt;.rd</code> documentation file</li>
@@ -3286,7 +3286,7 @@ std_scale_df &lt;- function(df) {
 
 </article></slide><slide class=""><hgroup><h2>Load the package to test the functionality</h2></hgroup><article  id="load-the-package-to-test-the-functionality">
 
-<pre class = 'prettyprint lang-r'>usethis::load_all()</pre>
+<pre class = 'prettyprint lang-r'>devtools::load_all()</pre>
 
 <ul>
 <li>This is simulating installing the package and loading it, so useful for checking while developing.</li>
@@ -3300,11 +3300,11 @@ std_scale_df &lt;- function(df) {
 <li>If need to use <code>%&gt;%</code> or <code>:=</code> specify in roxygen function comment with <code>@importFrom</code></li>
 </ul>
 
-<pre >#&#39; @importFrom rlang :=
+<pre class = 'prettyprint lang-r'>#&#39; @importFrom rlang :=
 #&#39; @importFrom magrittr %&gt;%</pre>
 
 <ul>
-<li><code>use_pipe()</code> is a way to set a package so can use magrittr pipe <code>%&gt;%</code> in every function (definitely should not have <code>library(magrittr)</code> in package function.)</li>
+<li><code>usethis::use_pipe()</code> is an alternative way, setting a package so can use magrittr pipe <code>%&gt;%</code> in every function.<br/>(definitely should not have <code>library(magrittr)</code> in package R files).</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Distributing - building a package</h2></hgroup><article  id="distributing---building-a-package">
@@ -3318,7 +3318,7 @@ std_scale_df &lt;- function(df) {
 <li>However, there is a <code>usethis</code> function to do this:</li>
 </ul>
 
-<pre >usethis::use_version() #prompts with options of how to increment the version number.</pre></article></slide>
+<pre class = 'prettyprint lang-r'>usethis::use_version() #prompts with options of how to increment the version number.</pre></article></slide>
 
 
   <slide class="backdrop"></slide>
