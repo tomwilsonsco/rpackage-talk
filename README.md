@@ -1,4 +1,4 @@
-# rpackage-talk
+# Talk on introduction to R Packages
 Introduction to creating R packages talk for Scottish Government R User Day, 5 October 2022.  
 Consists of:
 - [creating_r_packages.Rmd](https://github.com/tomwilsonsco/rpackage-talk/blob/main/creating_r_packages.Rmd) R Markdown to create io_slides presentation.
