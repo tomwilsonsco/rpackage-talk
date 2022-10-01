@@ -3125,32 +3125,7 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class=""><hgroup><h2>An introduction to creating R Packages</h2></hgroup><article  id="an-introduction-to-creating-r-packages">
-
-<h3>Aim to cover</h3>
-
-<ol>
-<li>Why create a package?</li>
-<li>Useful reference materials and useful R libraries.</li>
-<li>Basic run through of creating a package in R Studio.</li>
-<li>Documenting functions within a package.</li>
-<li>Checking a package for errors.</li>
-<li>Building / compiling the package.</li>
-</ol>
-
-</article></slide><slide class=""><hgroup><h2>An introduction to creating R Packages</h2></hgroup><article  id="an-introduction-to-creating-r-packages-1">
-
-<h3>This talk won’t cover</h3>
-
-<ol>
-<li>Use of Git and GitHub.<br/></li>
-<li>Formal code testing.</li>
-<li>Creating vignettes.</li>
-<li>Using C and C++, Rcpp for peformance.</li>
-<li>Releasing a package on CRAN.</li>
-</ol>
-
-</article></slide><slide class=""><hgroup><h2>What is an R Package?</h2></hgroup><article  id="what-is-an-r-package">
+<slide class=""><hgroup><h2>What is an R Package?</h2></hgroup><article  id="what-is-an-r-package">
 
 <ul>
 <li>A package is what we install from <a href='https://cran.r-project.org/' title=''>CRAN</a> (or an internal server) with <code>install.packages()</code> and load with <code>library()</code>.</li>
@@ -3162,12 +3137,37 @@ slide:not(.current) .plotly.html-widget{
 </article></slide><slide class=""><hgroup><h2>Why create an R Package?</h2></hgroup><article  id="why-create-an-r-package">
 
 <ul>
-<li>Sharing: Make processes you have developed accessible to others by installing the package, not copying code or script files.</li>
+<li>Sharing: Make processes you have developed easily accessible to others by installing the package, not copying code or script files.</li>
 <li>Reusability: Packages will usually bundle functionality that can be used across many projects.</li>
-<li>Reproducibility: Packaging code with a build version for use in an <a href='https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/' title=''>Reproducible Analytical Pipeline</a>.</li>
-<li>Clarity: A known system for structuring code repository, documenting processes, testing them.</li>
-<li>Understanding: Developing an R package gives builds knowledge of how R works.</li>
+<li>Reproducibility: Custom R packages may be used in, or developed to deliver a <a href='https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/' title=''>Reproducible Analytical Pipeline</a>.</li>
+<li>Clarity: A known system for structuring an R code repository, documenting R processes, testing R code.</li>
+<li>Knowledge: Developing an R package gives a better understanding of how R works.</li>
 </ul>
+
+</article></slide><slide class=""><hgroup><h2>An introduction to creating R Packages</h2></hgroup><article  id="an-introduction-to-creating-r-packages">
+
+<h3>Aim to cover in this talk</h3>
+
+<ol>
+<li>Why create a package?</li>
+<li>Useful reference materials and useful R libraries.</li>
+<li>Basic run through of creating a package in R Studio.</li>
+<li>Documenting functions within a package using <code>roxygen2</code>.</li>
+<li>Checking a package for errors.</li>
+<li>Building / compiling the package.</li>
+</ol>
+
+</article></slide><slide class=""><hgroup><h2>An introduction to creating R Packages</h2></hgroup><article  id="an-introduction-to-creating-r-packages-1">
+
+<h3>This introductory talk won’t cover</h3>
+
+<ol>
+<li>Use of Git and GitHub.<br/></li>
+<li>Formal code testing.</li>
+<li>Creating vignettes.</li>
+<li>Releasing a package on CRAN.</li>
+<li>Rewriting R code in C++ and using Rcpp for performance.</li>
+</ol>
 
 </article></slide><slide class=""><hgroup><h2>Reference materials</h2></hgroup><article  id="reference-materials">
 
@@ -3176,7 +3176,7 @@ slide:not(.current) .plotly.html-widget{
 <li><a href='https://cran.r-project.org/doc/manuals/R-exts.html' title=''>Writing R Extensions</a>. Definitive guide on CRAN for reference.</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Packages that are useful for creating a package</h2></hgroup><article  id="packages-that-are-useful-for-creating-a-package">
+</article></slide><slide class=""><hgroup><h2>R Packages that are useful for creating a package</h2></hgroup><article  id="r-packages-that-are-useful-for-creating-a-package">
 
 <ul>
 <li><a href='https://cran.r-project.org/web/packages/devtools/index.html' title=''>devtools</a> a bit like a &lsquo;tidyverse&rsquo; for package development.</li>
@@ -3201,12 +3201,6 @@ slide:not(.current) .plotly.html-widget{
 <pre class = 'prettyprint lang-r'># Might use available package to check package name
 available::available(&quot;mypackagename&quot;)</pre>
 
-</article></slide><slide class=""><hgroup><h2>Make package a git repository</h2></hgroup><article  id="make-package-a-git-repository">
-
-<pre class = 'prettyprint lang-r'>usethis::use_git()</pre>
-
-<p>Does the same as <code>git init</code> but adds certain files to <code>.gitignore</code>.<br/>If want to put package on GitHub:<br/>- Easiest might be to create GitHub repo first of name of package.<br/>- Then can set the remote:<br/><code>git remote add orign &lt;ssh link&gt;</code><br/>Alternatively, the <code>usethis</code> package does have a <code>use_github</code> function might explore.<br/>(Beware of main vs master if using older usethis package version).</p>
-
 </article></slide><slide class=""><hgroup><h2>Structure of an R package</h2></hgroup><article  id="structure-of-an-r-package">
 
 <ul>
@@ -3215,15 +3209,36 @@ available::available(&quot;mypackagename&quot;)</pre>
 <li><p><code>R\</code> folder contains the code that will be created.</p></li>
 </ul>
 
+</article></slide><slide class=""><hgroup><h2>Make package a git repository</h2></hgroup><article  id="make-package-a-git-repository">
+
+<pre class = 'prettyprint lang-r'>usethis::use_git()</pre>
+
+<p>Does the same as <code>git init</code> but adds certain files to <code>.gitignore</code>.<br/>If want to put package on GitHub:<br/>- Easiest might be to create GitHub repo first of name of package.<br/>- Then can set the remote:<br/><code>git remote add orign &lt;ssh link&gt;</code><br/>Alternatively, the <code>usethis</code> package does have a <code>use_github</code> function might explore.<br/>(Beware of main vs master if using older usethis package version).</p>
+
 </article></slide><slide class=""><hgroup><h2>Create first function</h2></hgroup><article  id="create-first-function">
 
 <pre class = 'prettyprint lang-r'>usethis::use_r(clean_column_names.R)</pre>
 
-<p>This simply creates a script to create a function under <code>R/</code>.</p>
+<ul>
+<li>This simply creates a script to create a function under <code>R/</code>.<br/></li>
+<li>Often see each main function made available to uses of a package will be in its own R script under <code>R/</code>.</li>
+</ul>
 
-<p>We want to create a documentation for the function. In RStudio with cursor inside the function go to menu and select Code &gt; Insert roxygen skeleton.</p>
+</article></slide><slide class=""><hgroup><h2>What should go in the R/<script_name>.R files</h2></hgroup><article  id="what-should-go-in-the-r.r-files">
 
-<pre >#&#39; Title
+<ul>
+<li>Note that only function definitions should be in these files.</li>
+<li>Do not use <code>library(package_name)</code> to load other libraries.</li>
+<li>Do not use <code>source(&quot;my_other_script.R&quot;)</code>.</li>
+<li>It is fine to have more than one function in one .R file, generally one main function and its helper function.</li>
+<li>See chapter 7 of <a href='https://r-pkgs.org/Code.html' title=''>Building R Packages</a> for a discussion on these things.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Create a documentation for the function.</h2></hgroup><article  id="create-a-documentation-for-the-function.">
+
+<p>In RStudio with cursor inside the function go to menu and select Code &gt; Insert roxygen skeleton.</p>
+
+<pre class = 'prettyprint lang-r'>#&#39; Title
 #&#39;
 #&#39; @param df 
 #&#39;
@@ -3238,28 +3253,17 @@ std_scale_df &lt;- function(df) {
 </article></slide><slide class=""><hgroup><h2>Document a function - roxygen2</h2></hgroup><article  id="document-a-function---roxygen2">
 
 <ul>
-<li>In particular the main function should have roxygen2 comment.</li>
-<li>In RStudio, while cursor inside function, go to Code &gt; Insert Roxygen Skelton</li>
-<li>The roxygen comment is generates the help for the function.</li>
-<li>Need to add:
+<li>The roxygen function comment generates the help for the function.</li>
+<li>Need to complete the template generated by Code &gt; Insert roxygen skelton:
 
 <ul>
-<li>Description of function at the top.</li>
-<li>A description of each input argument.</li>
-<li>What it returns.</li>
-<li>An example of using.</li>
+<li>A title describing the function in one line at the top.</li>
+<li>If leave a blank line after the title sentence can then add more descriptive text until the first @.</li>
+<li>A description of each input argument next to <code>@param</code>.</li>
+<li>What it returns next to <code>@returns</code>.</li>
+<li>An example of using it below the <code>@examples</code>.</li>
 </ul></li>
-<li>The <code>@export</code> means the function will be available to users once package loaded (adds to NAMESPACE).</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>What should go in the R/<script_name>.R files</h2></hgroup><article  id="what-should-go-in-the-r.r-files">
-
-<ul>
-<li>Note that only function definitions should be in these files.</li>
-<li>Do not use <code>library(package_name)</code> to load other libraries.</li>
-<li>Do not use <code>source(&quot;my_other_script.R&quot;)</code>.</li>
-<li>It is fine to have more than one function in one .R file, generally one main function and its helper function.</li>
-<li>See chapter 7 of <a href='https://r-pkgs.org/Code.html' title=''>Building R Packages</a> for discuss on these things.</li>
+<li>The <code>@export</code> means the function will be available to users once package loaded (adds to NAMESPACE). Don’t write anything next to this.</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Importing other packages used in functions</h2></hgroup><article  id="importing-other-packages-used-in-functions">
@@ -3277,7 +3281,7 @@ std_scale_df &lt;- function(df) {
 
 <p>After populating the roxygen2 comments for exported functions, can generate the documentation.</p>
 
-<pre class = 'prettyprint lang-r'>document()</pre>
+<pre class = 'prettyprint lang-r'>devtools::document()</pre>
 
 <ul>
 <li>Creates a <code>man/&lt;function_name&gt;.rd</code> documentation file</li>
@@ -3286,7 +3290,7 @@ std_scale_df &lt;- function(df) {
 
 </article></slide><slide class=""><hgroup><h2>Load the package to test the functionality</h2></hgroup><article  id="load-the-package-to-test-the-functionality">
 
-<pre class = 'prettyprint lang-r'>usethis::load_all()</pre>
+<pre class = 'prettyprint lang-r'>devtools::load_all()</pre>
 
 <ul>
 <li>This is simulating installing the package and loading it, so useful for checking while developing.</li>
@@ -3300,25 +3304,25 @@ std_scale_df &lt;- function(df) {
 <li>If need to use <code>%&gt;%</code> or <code>:=</code> specify in roxygen function comment with <code>@importFrom</code></li>
 </ul>
 
-<pre >#&#39; @importFrom rlang :=
+<pre class = 'prettyprint lang-r'>#&#39; @importFrom rlang :=
 #&#39; @importFrom magrittr %&gt;%</pre>
 
 <ul>
-<li><code>use_pipe()</code> is a way to set a package so can use magrittr pipe <code>%&gt;%</code> in every function (definitely should not have <code>library(magrittr)</code> in package function.)</li>
+<li><code>usethis::use_pipe()</code> is an alternative way, setting a package so can use magrittr pipe <code>%&gt;%</code> in every function.<br/>(definitely should not have <code>library(magrittr)</code> in package R files).</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Distributing - building a package</h2></hgroup><article  id="distributing---building-a-package">
 
 <ul>
 <li>Use <code>devtools::build()</code>.</li>
-<li>If want a binary use <code>devtools::build(binary=TRUE)</code></li>
+<li>If want a binary use <code>devtools::build(binary=TRUE)</code>.</li>
 <li>People can also install package from GitHub <code>devtools::install_github()</code>.</li>
 <li>The <code>.Rbuildignore</code> specifies files that will not be included in package tarball or binary.</li>
 <li>Note that might wish to increment the version before building. This is in DESCRIPTION.</li>
 <li>However, there is a <code>usethis</code> function to do this:</li>
 </ul>
 
-<pre >usethis::use_version() #prompts with options of how to increment the version number.</pre></article></slide>
+<pre class = 'prettyprint lang-r'>usethis::use_version() #prompts with options of how to increment the version number.</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

@@ -17,22 +17,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(devtools)
 ```
-## An introduction to creating R Packages
-### Aim to cover
-x. Why create a package?
-x. Useful reference materials and useful R libraries.
-x. Basic run through of creating a package in R Studio.
-x. Documenting functions within a package.
-x. Checking a package for errors.
-x. Building / compiling the package.
-
-## An introduction to creating R Packages
-### This talk won't cover
-x. Use of Git and GitHub.  
-x. Formal code testing.
-x. Creating vignettes.
-x. Using C and C++, Rcpp for peformance.
-x. Releasing a package on CRAN.
 
 ## What is an R Package?
 
@@ -44,18 +28,35 @@ x. Releasing a package on CRAN.
 
 ## Why create an R Package?
 
-- Sharing: Make processes you have developed accessible to others by installing the package, not copying code or script files.
+- Sharing: Make processes you have developed easily accessible to others by installing the package, not copying code or script files.
 - Reusability: Packages will usually bundle functionality that can be used across many projects.
-- Reproducibility: Packaging code with a build version for use in an [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
-- Clarity: A known system for structuring code repository, documenting processes, testing them.
-- Understanding: Developing an R package gives builds knowledge of how R works.
+- Reproducibility: Custom R packages may be used in, or developed to deliver a [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
+- Clarity: A known system for structuring an R code repository, documenting R processes, testing R code.
+- Knowledge: Developing an R package gives a better understanding of how R works.
+
+## An introduction to creating R Packages
+### Aim to cover in this talk
+x. Why create a package?
+x. Useful reference materials and useful R libraries.
+x. Basic run through of creating a package in R Studio.
+x. Documenting functions within a package using `roxygen2`.
+x. Checking a package for errors.
+x. Building / compiling the package.
+
+## An introduction to creating R Packages
+### This introductory talk won't cover
+x. Use of Git and GitHub.  
+x. Formal code testing.
+x. Creating vignettes.
+x. Releasing a package on CRAN.
+x. Rewriting R code in C++ and using Rcpp for performance.
 
 ## Reference materials
 
 - [Creating R Packages](https://r-pkgs.org/) by Hadley Wickham and Jenny Bryan. Easy to follow introductory guide, based around [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and related libraries.
 - [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html). Definitive guide on CRAN for reference.
 
-## Packages that are useful for creating a package
+## R Packages that are useful for creating a package
 - [devtools](https://cran.r-project.org/web/packages/devtools/index.html) a bit like a 'tidyverse' for package development.
 - [usethis](https://cran.r-project.org/web/packages/usethis/index.html) automating package setup and configuration tasks.
 - [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html) documentation and management of package metadata files.
@@ -78,17 +79,6 @@ The package name must:
 # Might use available package to check package name
 available::available("mypackagename")
 ```
-## Make package a git repository
-```{r use-git, eval=FALSE}
-usethis::use_git()
-```
-Does the same as `git init` but adds certain files to `.gitignore`.  
-If want to put package on GitHub:  
-- Easiest might be to create GitHub repo first of name of package.  
-- Then can set the remote:    
-`git remote add orign <ssh link>`  
-Alternatively, the `usethis` package does have a `use_github` function might explore.  
-(Beware of main vs master if using older usethis package version).
 
 ## Structure of an R package
 - DESCRIPTION file provides important information about the package.
@@ -98,15 +88,38 @@ Imported packages will later be added to this using `usethis::use_package("packa
 - NAMESPACE contains the functions that will be available to users of the package.
 - `R\` folder contains the code that will be created.
 
+## Make package a git repository
+```{r use-git, eval=FALSE}
+usethis::use_git()
+```
+
+Does the same as `git init` but adds certain files to `.gitignore`.  
+If want to put package on GitHub:  
+- Easiest might be to create GitHub repo first of name of package.  
+- Then can set the remote:    
+`git remote add orign <ssh link>`  
+Alternatively, the `usethis` package does have a `use_github` function might explore.  
+(Beware of main vs master if using older usethis package version).
+
 ## Create first function
 ```{r first-function, eval=FALSE}
 usethis::use_r(clean_column_names.R)
 ```
-This simply creates a script to create a function under `R/`.  
 
-We want to create a documentation for the function.
+- This simply creates a script to create a function under `R/`.  
+- Often see each main function made available to uses of a package will be in its own R script under `R/`.
+
+
+## What should go in the R/<script_name>.R files
+- Note that only function definitions should be in these files.
+- Do not use `library(package_name)` to load other libraries.
+- Do not use `source("my_other_script.R")`.
+- It is fine to have more than one function in one .R file, generally one main function and its helper function.
+- See chapter 7 of [Building R Packages](https://r-pkgs.org/Code.html) for a discussion on these things.
+
+## Create a documentation for the function.
 In RStudio with cursor inside the function go to menu and select Code > Insert roxygen skeleton.
-```
+```{r roxygen, eval=FALSE}
 #' Title
 #'
 #' @param df 
@@ -121,22 +134,15 @@ std_scale_df <- function(df) {
 ```
 
 ## Document a function - roxygen2
-- In particular the main function should have roxygen2 comment.
-- In RStudio, while cursor inside function, go to Code > Insert Roxygen Skelton
-- The roxygen comment is generates the help for the function.
-- Need to add:
-  - Description of function at the top.
-  - A description of each input argument.
-  - What it returns.
-  - An example of using.
-- The `@export` means the function will be available to users once package loaded (adds to NAMESPACE).
+- The roxygen function comment generates the help for the function.
+- Need to complete the template generated by Code > Insert roxygen skelton:
+  - A title describing the function in one line at the top.
+  - If leave a blank line after the title sentence can then add more descriptive text until the first @.
+  - A description of each input argument next to `@param`.
+  - What it returns next to `@returns`.
+  - An example of using it below the `@examples`.
+- The `@export` means the function will be available to users once package loaded (adds to NAMESPACE). Don't write anything next to this.
 
-## What should go in the R/<script_name>.R files
-- Note that only function definitions should be in these files.
-- Do not use `library(package_name)` to load other libraries.
-- Do not use `source("my_other_script.R")`.
-- It is fine to have more than one function in one .R file, generally one main function and its helper function.
-- See chapter 7 of [Building R Packages](https://r-pkgs.org/Code.html) for discuss on these things.
 
 ## Importing other packages used in functions
 - In most cases best to specify packages as `imports` not `depends`.
@@ -150,7 +156,7 @@ usethis::use_package("dplyr")
 ## Generate the documentation from roxygen comments
 After populating the roxygen2 comments for exported functions, can generate the documentation.
 ```{r document-function, eval=FALSE}
-document()
+devtools::document()
 ```
 
 - Creates a `man/<function_name>.rd` documentation file
@@ -158,7 +164,7 @@ document()
 
 ## Load the package to test the functionality
 ```{r load-package, eval=FALSE}
-usethis::load_all()
+devtools::load_all()
 ```
 - This is simulating installing the package and loading it, so useful for checking while developing.
 - Note the functions in the package will be available, but not seen in the global environment, just like when load with `library()`.
@@ -166,20 +172,20 @@ usethis::load_all()
 ## Suggestions
 - `devtools::check()` is a good way to ensure everything is in order.
 - If need to use `%>%` or `:=` specify in roxygen function comment with `@importFrom`
-```
+```{r pipe, eval=FALSE}
 #' @importFrom rlang :=
 #' @importFrom magrittr %>%
 ```
-- `use_pipe()` is a way to set a package so can use magrittr pipe `%>%` in every function 
-(definitely should not have `library(magrittr)` in package function.) 
+- `usethis::use_pipe()` is an alternative way, setting a package so can use magrittr pipe `%>%` in every function.   
+(definitely should not have `library(magrittr)` in package R files). 
 
 ## Distributing - building a package
 - Use `devtools::build()`.
-- If want a binary use `devtools::build(binary=TRUE)`
+- If want a binary use `devtools::build(binary=TRUE)`.
 - People can also install package from GitHub `devtools::install_github()`.
 - The `.Rbuildignore` specifies files that will not be included in package tarball or binary. 
 - Note that might wish to increment the version before building. This is in DESCRIPTION.
 - However, there is a `usethis` function to do this:
-```
+```{r use_version, eval=FALSE}
 usethis::use_version() #prompts with options of how to increment the version number.
 ```
