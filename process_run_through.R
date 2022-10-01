@@ -55,8 +55,8 @@ head(iris, 10)
 devtools::check()
 
 # Final thing we will cover - building
-usethis::build() # this will create a "source" tar.gz
-usethis::build(binary = TRUE) # this will make a compiled R binary at the version of R you are using
+devtools::build() # this will create a "source" tar.gz
+devtools::build(binary = TRUE) # this will make a compiled R binary at the version of R you are using
 
 # If want to change the build version - edit the description file or
 usethis::use_version()

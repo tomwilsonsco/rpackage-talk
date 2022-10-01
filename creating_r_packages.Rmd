@@ -1,5 +1,12 @@
 ---
-title: "An introduction to creating R packages"
+title: An introduction to creating R packages
+knit: (function(input_file, encoding) {
+    out_dir <- 'docs';
+    rmarkdown::render(input_file,
+    encoding=encoding,
+    output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+author: Tom Wilson thomas.wilson@gov.scot
+date: 5 October 2022
 output: 
   ioslides_presentation:
     widescreen: true
@@ -24,7 +31,7 @@ x. Building / compiling the package.
 x. Use of Git and GitHub.  
 x. Formal code testing.
 x. Creating vignettes.
-x. Using C and C++, Rccp for peformance.
+x. Using C and C++, Rcpp for peformance.
 x. Releasing a package on CRAN.
 
 ## What is an R Package?
@@ -37,7 +44,7 @@ x. Releasing a package on CRAN.
 
 ## Why create an R Package?
 
-- Sharing: Make R code you have developed accessible to others simply by installing the package.
+- Sharing: Make processes you have developed accessible to others by installing the package, not copying code or script files.
 - Reusability: Packages will usually bundle functionality that can be used across many projects.
 - Reproducibility: Packaging code with a build version for use in an [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
 - Clarity: A known system for structuring code repository, documenting processes, testing them.
@@ -129,6 +136,7 @@ std_scale_df <- function(df) {
 - Do not use `library(package_name)` to load other libraries.
 - Do not use `source("my_other_script.R")`.
 - It is fine to have more than one function in one .R file, generally one main function and its helper function.
+- See chapter 7 of [Building R Packages](https://r-pkgs.org/Code.html) for discuss on these things.
 
 ## Importing other packages used in functions
 - In most cases best to specify packages as `imports` not `depends`.
@@ -162,8 +170,8 @@ usethis::load_all()
 #' @importFrom rlang :=
 #' @importFrom magrittr %>%
 ```
-- `use_pipe()` is a way to set a package so can use magrittr pipe `%>%` in function 
-(definitely should not have `library(magrittr)` in package function.)
+- `use_pipe()` is a way to set a package so can use magrittr pipe `%>%` in every function 
+(definitely should not have `library(magrittr)` in package function.) 
 
 ## Distributing - building a package
 - Use `devtools::build()`.
@@ -175,5 +183,3 @@ usethis::load_all()
 ```
 usethis::use_version() #prompts with options of how to increment the version number.
 ```
-
-
