@@ -1,11 +1,11 @@
 
-# Create a package structure in a directory - here rpackagestest
+# Create a package structure in a directory - here called rpackagestest
 usethis::create_package("C:/tests/rpackagetest")
 
 # Note rules on naming a package (letters, numbers, . only, at least 2 letters, start with letter)
 
 # when in the package run
-usethis::use_git() # might be better to use git init as with older usethis default is named master, not main
+usethis::use_git()
 # Can use Git Bash / shell
 # to change default branch to main
 # git branch -m master main

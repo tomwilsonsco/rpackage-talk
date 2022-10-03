@@ -20,23 +20,23 @@ library(devtools)
 
 ## What is an R Package?
 
-- A package is what we install from [CRAN](https://cran.r-project.org/) (or an internal server) with `install.packages()` and load with `library()`.
-- Bundles R code (functions, methods, classes) so usable by others.
+- A package is what we may install from [CRAN](https://cran.r-project.org/) (or an internal server) with `install.packages()` and load with `library()`.
+- Bundles R code within functions so its usable by others after they install and load the package.
 - A package can include documentation, sample data, test scripts.
 - It is surprisingly easy to create an R package and highly recommended!
 
 
 ## Why create an R Package?
 
-- Sharing: Make processes you have developed easily accessible to others by installing the package, not copying code or script files.
-- Reusability: Packages will usually bundle functionality that can be used across many projects.
+- Sharing: Make processes you have developed easily accessible to others by installing the package, not copying and pasting code or script files.
+- Reusability: Packages will usually bundle functionality that may be used across many projects.
 - Reproducibility: Custom R packages may be used in, or developed to deliver a [Reproducible Analytical Pipeline](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/).
-- Clarity: A known system for structuring an R code repository, documenting R processes, testing R code.
-- Knowledge: Developing an R package gives a better understanding of how R works.
+- Clarity: R packages all follow a similar format in where R code is stored, how documentation is created, how test scripts are written. Instead of each person inventing their own way.
+- Knowledge: Developing an R package can give a better understanding of how R works.
 
 ## An introduction to creating R Packages
 ### Aim to cover in this talk
-x. Why create a package?
+x. Why create a package? (already covered)
 x. Useful reference materials and useful R libraries.
 x. Basic run through of creating a package in R Studio.
 x. Documenting functions within a package using `roxygen2`.
