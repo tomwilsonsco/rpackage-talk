@@ -129,7 +129,7 @@ Will see the roxygen comment using the `#'` combination with distinct sections d
 #' @export
 #'
 #' @examples
-std_scale_df <- function(df) {
+standard_scale_df <- function(df) {
   df %>% dplyr::mutate_if(is.numeric, std_scale)
 }
 ```

@@ -13,15 +13,15 @@ usethis::use_git()
 
 
 # create a function
-usethis::use_r("std_scale_column")
+usethis::use_r("standard_scale_df")
 
 # then we want to create a function
-std_scale <- function(x) {
+standard_scale <- function(x) {
   (x - mean(x)) / stats::sd(x)
 }
 
-std_scale_df <- function(df) {
-  df %>% dplyr::mutate_if(is.numeric, std_scale)
+standard_scale_df <- function(df) {
+  df %>% dplyr::mutate_if(is.numeric, standard_scale)
 }
 
 # (talk about help functions and main function, which to comment)
@@ -42,14 +42,14 @@ devtools::document() # equivalent of roxygen2::roxygenize()
 devtools::load_all()
 
 test_iris <- iris
-test_iris <- std_scale_df(test_iris)
+test_iris <- standard_scale_df(test_iris)
 head(test_iris, 10)
 #Show that it's worked by printing original and scaled
 head(iris, 10)
 
 # (Note that scale_column function available, but not in global env because it's like loading from library()
 # Bring up the help
-?std_scale_df
+?standard_scale_df
 
 # Good idea to check package periodically while developing
 devtools::check()
