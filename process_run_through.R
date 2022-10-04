@@ -1,16 +1,26 @@
 
+# Initial setup -----------------------------------------------------------
+
 # Create a package structure in a directory - here called rpackagestest
 usethis::create_package("C:/tests/rpackagetest")
 
-# Note rules on naming a package (letters, numbers, . only, at least 2 letters, start with letter)
+# Note rules on naming a package (letters, numbers, . only, at least 2 characters, start with letter)
 
-# when in the package run
+
+# Git and GitHub ----------------------------------------------------------
+# (not covering this in talk)
 usethis::use_git()
 # Can use Git Bash / shell
 # to change default branch to main
 # git branch -m master main
 # git remote add origin ssh_to_remote
+# If using GitHub, probably also want a README:
+usethis::use_readme_rmd()
+# Might want to add badges to show the status : https://github.com/r-lib/devtools/
+usethis::use_lifecycle_badge("experimental")
 
+
+# Adding functions --------------------------------------------------------
 
 # create a function
 usethis::use_r("standard_scale_df")
@@ -24,7 +34,7 @@ standard_scale_df <- function(df) {
   df %>% dplyr::mutate_if(is.numeric, standard_scale)
 }
 
-# (talk about help functions and main function, which to comment)
+# (talk about help functions and main function, which to add roxygen comment)
 # Add dplyr to imports
 usethis::use_package("dplyr")
 usethis::use_package("stats")
@@ -34,6 +44,9 @@ usethis::use_package("magrittr")
 #' @importFrom magrittr %>%
 # Alternatively a pipe can be added with and can use in all functions
 usethis::use_pipe()
+
+
+# Document load and test --------------------------------------------------
 
 # The roxygen comment should be added for the main function and then create documentation and namespace entry
 devtools::document() # equivalent of roxygen2::roxygenize()
@@ -50,6 +63,9 @@ head(iris, 10)
 # (Note that scale_column function available, but not in global env because it's like loading from library()
 # Bring up the help
 ?standard_scale_df
+
+
+# Checking and building ---------------------------------------------------
 
 # Good idea to check package periodically while developing
 devtools::check()
