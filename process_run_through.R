@@ -74,5 +74,11 @@ devtools::check()
 devtools::build() # this will create a "source" tar.gz
 devtools::build(binary = TRUE) # this will make a compiled R binary at the version of R you are using
 
+# By default build will be created in parent dir of project, can then install and load
+# Need to restart R as package is already loaded from devtools::load_all()
+.rs.restartR()
+install.packages("../rpackagetest_0.0.0.9000.zip", repos=NULL, type="win.binary")
+library(rpackagetest)
+
 # If want to change the build version - edit the description file or
 usethis::use_version()
